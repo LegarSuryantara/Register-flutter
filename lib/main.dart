@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => LoginPage(),
         '/register': (context) => RegisterPage(),
-        '/profil' : (context)=> ProfilePage(),
+        '/profil' : (context)=> ProfilePage(name: '', email: '',),
       },
     );
   }

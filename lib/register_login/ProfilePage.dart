@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatelessWidget {
+  final String name;
+  final String email;
+  ProfilePage({required this.name, required this.email});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +13,7 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: Colors.blueAccent,
       ),
       body: Center(
-        child: Padding(
+          child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -20,19 +24,42 @@ class ProfilePage extends StatelessWidget {
               child: Icon(Icons.person, size: 80, color: Colors.white),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Nama Pengguna',
+            Text(
+              name,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-            const Text(
-              'email@example.com',
+            Text(
+              email,
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             const SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/');
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Konfirmasi Logout'),
+                      content: Text('Apakah Anda yakin ingin logout?'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.pushReplacementNamed(context, '/');
+                          },
+                          child: Text('Logout'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               child: Text('Logout'),
               style: ElevatedButton.styleFrom(
@@ -42,8 +69,7 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
-        )
-      ),
+      )),
     );
   }
 }

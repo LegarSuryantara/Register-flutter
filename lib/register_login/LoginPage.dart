@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'ProfilePage.dart';
+
 class LoginPage extends StatelessWidget {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passworldController = TextEditingController();
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -14,12 +20,20 @@ class LoginPage extends StatelessWidget {
           children: [
             Icon(Icons.person, size: 100, color: Colors.blueAccent),
             const SizedBox(height: 20),
-            const TextField(
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                  labelText: 'Username', border: OutlineInputBorder()),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: emailController,
               decoration: InputDecoration(
                   labelText: 'Email Anda', border: OutlineInputBorder()),
             ),
             const SizedBox(height: 20),
             TextField(
+              controller: passworldController,
               decoration: InputDecoration(
                   labelText: 'Password Anda', border: OutlineInputBorder()),
               obscureText: true,
@@ -27,11 +41,58 @@ class LoginPage extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/profil');
+                if (nameController.text.isEmpty ||
+                    emailController.text.isEmpty ||
+                    passworldController.text.isEmpty) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Form Tidak Lengkap'),
+                        content: Text('Silakan isi semua field sebelum login'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Login'),
+                        content: Text('Anda berhasil login'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop(); 
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProfilePage(
+                                    name: nameController.text,
+                                    email: emailController.text,
+                                  ),
+                                ),
+                              ); 
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               child: Text('Login'),
             ),
-            TextButton( 
+            TextButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/register');
                 },
